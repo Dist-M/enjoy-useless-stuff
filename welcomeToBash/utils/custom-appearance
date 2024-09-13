@@ -1,0 +1,39 @@
+#!/bin/bash
+
+# Aggiungi configurazioni personalizzate per PS1
+# Imposta il prompt predefinito
+prompt_default() {
+    export PS1='${debian_chroot:+($debian_chroot)}\[\033[35m\]\u\[\033[00m\]:\[\033[01;32m\]\w\[\033[1;30m\]$(git branch 2>/dev/null | grep -e "^\* " | sed "s/^* / /")\[\033[00m\]\$ '
+}
+
+# Prompt breve
+prompt_short() {
+    export PS1='${debian_chroot:+($debian_chroot)}\[\033[35m\]\u\[\033[00m\]:\[\033[01;32m\]\w\[\033[00m\]\$ '
+}
+
+# Prompt standard
+prompt_standard() {
+    export PS1='${debian_chroot:+($debian_chroot)}\[\033[35m\]\u@\h\[\033[00m\]:\[\033[01;32m\]\w\[\033[00m\]\$ '
+}
+
+# Prompt completo con branch git
+prompt_complete() {
+    export PS1='${debian_chroot:+($debian_chroot)}\[\033[35m\]\u@\h[\033[00m\]:\[\033[01;32m\]\w\[\033[1;30m\]$(git branch 2>/dev/null | grep -e "^\* " | sed "s/^* / /")\[\033[00m\]\$ '
+}
+
+# Funzione per cambiare il prompt
+function customprompt() {
+    echo "Seleziona una configurazione di prompt:"
+    echo "1) Default: User: Path | git branch"
+    echo "2) Short Mode: User: Path"
+    echo "3) Standard: User@Host: Path"
+    echo "4) Complete: User@Host: Path | git branch"
+    read -p "Inserisci il numero della configurazione desiderata: " choice
+    case $choice in
+        1) prompt_default ;;
+        2) prompt_short ;;
+        3) prompt_standard ;;
+        4) prompt_complete ;;
+        *) echo "Scelta non valida" ;;
+    esac
+}

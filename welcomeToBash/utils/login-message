@@ -1,0 +1,36 @@
+#!/bin/bash
+# CPU usage
+cpu_usage=$(top -bn1 | grep "Cpu(s)" | sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | awk '{print 100 - $1"%"}')
+
+# Memory usage
+memory_usage=$(free -m | awk '/^Mem/{printf("%.2f%%", $3/$2*100.0)}')
+
+# Local IP Address
+ip_address=$(hostname -I | awk '{print $1}')
+
+# Colouring
+RED="\e[31m"
+GREEN="\e[01;32m"
+NC="\e[0m" # No Color
+
+# Message
+echo -e "${GREEN}_________________________________________________________${NC}"
+echo -e " __  __      _____                                        "
+echo -e "/\ \/\ \    /\  _  \                                      "
+echo -e "\ \ \ \ \   \ \ \_\ \  __  __    ___     ___   __  __     "
+echo -e " \ \ \ \ \   \ \  _ < /\ \/\ \ /' _  \ /' _  \/\ \/\ \    "
+echo -e "  \ \ \/ / __ \ \ \_\ \ \ \_\ \/\ \/\ \/\ \/\ \ \ \_\ \   "
+echo -e "   \ \__/ /\_\ \ \____/\ \____/\ \_\ \_\ \_\ \_\ \____ \  "
+echo -e "    \/_/  \/_/  \/___/  \/___/  \/_/\/_/\/_/\/_/\/___/> \ "
+echo -e "                                                   /\___/ "
+echo -e "                                                   \/__/  "
+echo -e "${GREEN}_________________________________________________________${NC}"
+echo -e ""
+echo -e "${GREEN} CPU usage:${NC} $cpu_usage"
+echo -e "${GREEN} IP Address:${NC} $ip_address"
+echo -e "${GREEN} Memory usage:${NC} $memory_usage"
+echo -e "${GREEN} System Boot:${NC} $(uptime -s)"
+echo -e "${GREEN} Uptime for:${NC} $(uptime -p)"
+echo -e "${GREEN} Users logged at:${NC} $(who | awk '!/root/ {print $1}')"
+echo -e "${GREEN}_________________________________________________________${NC}"
+echo -e ""
